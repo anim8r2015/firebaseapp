@@ -14,7 +14,8 @@
         "infyomlabs/adminlte-templates": "^2.0",
         "infyomlabs/laravel-generator": "dev-develop",
         "laravel/framework": "^8.12",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+		"ext-grpc":"*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
