@@ -9,9 +9,8 @@ class FirebaseController extends Controller {
 
     //add new collection
     public function createCollection(Request $request){
-        $db = new FirestoreClient([
-            'projectId' => $projectId,
-        ]);
+        $db = new FirestoreClient();
+           // [      'projectId' => $projectId,   ]);
         $data = json_encode($request->post());
         $data = json_decode($data);
         
