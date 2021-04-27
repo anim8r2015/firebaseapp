@@ -44,6 +44,10 @@ class FirebaseController extends Controller {
     public function updateCollection(Request $request){
         $projectId = env('PROJECT_ID');
         $serviceAccountPath = env('PROJECT_KEY_PATH');
+        $config = [
+            'keyFilePath' => $serviceAccountPath,
+            'projectId' => $projectId,
+        ];
         $db = new FirestoreClient($config);
         $data = json_encode($request->post());
         $data = json_decode($data);
@@ -68,6 +72,10 @@ class FirebaseController extends Controller {
     public function getDocsByCollection($collection, Request $request){
         $projectId = env('PROJECT_ID');
         $serviceAccountPath = env('PROJECT_KEY_PATH');
+        $config = [
+            'keyFilePath' => $serviceAccountPath,
+            'projectId' => $projectId,
+        ];
         $db = new FirestoreClient($config);
         $collectionRef = $db->collection($collection);
 
@@ -85,6 +93,10 @@ class FirebaseController extends Controller {
     public function getDocsByCollectionCriteria($collection, $field, $value, Request $request){
         $projectId = env('PROJECT_ID');
         $serviceAccountPath = env('PROJECT_KEY_PATH');
+        $config = [
+            'keyFilePath' => $serviceAccountPath,
+            'projectId' => $projectId,
+        ];
         $db = new FirestoreClient($config);
         $collectionRef = $db->collection($collection);
         $query = $collectionRef->where($field, '=', $value);
