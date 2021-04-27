@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+// Imports the Cloud Storage client library.
+use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Firestore\FirestoreClient;
 use Illuminate\Http\Request;
 
@@ -9,7 +11,14 @@ class FirebaseController extends Controller {
 
     //add new collection
     public function createCollection(Request $request){
-        $db = new FirestoreClient();
+
+        $projectId = env('PROJECT_ID');
+        $serviceAccountPath = env('PROJECT_KEY_PATH');
+        $config = [
+            'keyFilePath' => $serviceAccountPath,
+            'projectId' => $projectId,
+        ];
+        $db = new FirestoreClient($config);
            // [      'projectId' => $projectId,   ]);
         $data = json_encode($request->post());
         $data = json_decode($data);
@@ -33,7 +42,9 @@ class FirebaseController extends Controller {
 
     //update collection
     public function updateCollection(Request $request){
-        $db = new FirestoreClient();
+        $projectId = env('PROJECT_ID');
+        $serviceAccountPath = env('PROJECT_KEY_PATH');
+        $db = new FirestoreClient($config);
         $data = json_encode($request->post());
         $data = json_decode($data);
 
@@ -55,7 +66,9 @@ class FirebaseController extends Controller {
 
     //query data in a collection
     public function getDocsByCollection($collection, Request $request){
-        $db = new FirestoreClient();
+        $projectId = env('PROJECT_ID');
+        $serviceAccountPath = env('PROJECT_KEY_PATH');
+        $db = new FirestoreClient($config);
         $collectionRef = $db->collection($collection);
 
         //$query = $citiesRef->where('name', '<>', null);
@@ -70,7 +83,9 @@ class FirebaseController extends Controller {
     }
 
     public function getDocsByCollectionCriteria($collection, $field, $value, Request $request){
-        $db = new FirestoreClient();
+        $projectId = env('PROJECT_ID');
+        $serviceAccountPath = env('PROJECT_KEY_PATH');
+        $db = new FirestoreClient($config);
         $collectionRef = $db->collection($collection);
         $query = $collectionRef->where($field, '=', $value);
         $documents = $query->documents();
@@ -82,6 +97,22 @@ class FirebaseController extends Controller {
         }
         return $this->sendResponse($collections, $collection.' data retrieved successfully!');
     }
+
+    /*
+    function auth_cloud_explicit($projectId, $serviceAccountPath) {
+    //# Explicitly use service account credentials by specifying the private key
+    //# file.
+        $config = [
+            'keyFilePath' => $serviceAccountPath,
+            'projectId' => $projectId,
+        ];
+        $storage = new StorageClient($config);
+
+        //# Make an authenticated API request (listing storage buckets)
+        foreach ($storage->buckets() as $bucket) {
+            printf('Bucket: %s' . PHP_EOL, $bucket->name());
+        } 
+    }*/
 
     //query a compound collection by traversing or otherwise
 
